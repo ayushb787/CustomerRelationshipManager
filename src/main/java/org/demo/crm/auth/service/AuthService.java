@@ -6,7 +6,7 @@ import org.demo.crm.auth.exception.UserAlreadyExistsException;
 import org.demo.crm.auth.exception.UserNotFoundException;
 import org.demo.crm.auth.model.User;
 import org.demo.crm.auth.repository.UserRepository;
-import org.demo.crm.auth.security.JwtUtils;
+import org.demo.crm.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

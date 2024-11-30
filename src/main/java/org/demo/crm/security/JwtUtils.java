@@ -43,7 +43,7 @@ public class JwtUtils {
     }
 
     // Extract claims from the JWT token
-    private Claims extractClaims(String token) {
+    public Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(jwtSecret)
                 .build()

@@ -6,6 +6,7 @@ import org.demo.crm.auth.model.ApiResponse;
 import org.demo.crm.customer.exception.CustomerNotFoundException;
 import org.demo.crm.customer.exception.DuplicateEmailException;
 import org.demo.crm.customer.exception.DuplicatePhoneException;
+import org.demo.crm.lead.exception.LeadNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -54,11 +55,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(LeadNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleLeadNotFoundException(LeadNotFoundException ex) {
+        ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
     // Handle other exceptions (e.g., generic errors)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleGenericException(Exception ex) {
         ApiResponse<String> response = new ApiResponse<>(false, "An unexpected error occurred: " + ex.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ApiResponse<String>> handleSecurityException(SecurityException ex) {
+        ApiResponse<String> response = ApiResponse.error(ex.getMessage(), HttpStatus.FORBIDDEN.value());
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     // Handle validation exceptions (e.g., invalid fields in request body)

@@ -8,6 +8,7 @@ import org.demo.crm.auth.model.User;
 import org.demo.crm.auth.repository.UserRepository;
 import org.demo.crm.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,4 +61,14 @@ public class AuthService {
 
         return jwtUtils.generateToken(user.getUsername(), user.getRole());
     }
+
+    public String getUserRole(String username) {
+        // Fetch the user from the database or any repository
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Return the role of the user
+        return user.getRole(); // Assuming the `User` entity has a `getRole()` method
+    }
+
 }

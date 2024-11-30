@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll() // Public endpoints
                         .requestMatchers("/api/customers/**").authenticated() // Protect customer endpoints
+                        .requestMatchers("/api/leads/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(customizer -> customizer.realmName("CRM Auth"))

@@ -1,5 +1,7 @@
 package org.demo.crm.interaction.service;
 
+import org.demo.crm.auth.repository.UserRepository;
+import org.demo.crm.customer.repository.CustomerRepository;
 import org.demo.crm.interaction.dto.InteractionRequest;
 import org.demo.crm.interaction.dto.InteractionResponse;
 import org.demo.crm.interaction.entity.Interaction;
@@ -16,6 +18,12 @@ public class InteractionService {
     @Autowired
     private InteractionRepository interactionRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     public List<InteractionResponse> getAllInteractions() {
         return interactionRepository.findAll().stream()
                 .map(this::mapToResponse)
@@ -29,6 +37,17 @@ public class InteractionService {
     }
 
     public InteractionResponse createInteraction(InteractionRequest request) {
+
+        // Validate customerId
+        if (!customerRepository.existsById(request.getCustomerId())) {
+            throw new IllegalArgumentException("Customer ID " + request.getCustomerId() + " does not exist");
+        }
+
+        // Validate salespersonId with role "Salesperson"
+        if (!userRepository.existsByUserIdAndRole(request.getSalespersonId(), "Salesperson")) {
+            throw new IllegalArgumentException("Salesperson ID " + request.getSalespersonId() + " is invalid or does not have the role 'Salesperson'");
+        }
+
         Interaction interaction = mapToEntity(request);
         Interaction savedInteraction = interactionRepository.save(interaction);
         return mapToResponse(savedInteraction);

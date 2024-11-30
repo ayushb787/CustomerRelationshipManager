@@ -3,6 +3,7 @@ package org.demo.crm.exceptions;
 import org.demo.crm.auth.exception.UserAlreadyExistsException;
 import org.demo.crm.auth.exception.UserNotFoundException;
 import org.demo.crm.auth.model.ApiResponse;
+import org.demo.crm.communication.exception.CommunicationLogException;
 import org.demo.crm.customer.exception.CustomerNotFoundException;
 import org.demo.crm.customer.exception.DuplicateEmailException;
 import org.demo.crm.customer.exception.DuplicatePhoneException;
@@ -68,11 +69,18 @@ public class GlobalExceptionHandler {
         ApiResponse<String> response = new ApiResponse<>(false, "An unexpected error occurred: " + ex.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(NotificationNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleNotificationNotFoundException(NotificationNotFoundException ex) {
         ApiResponse<String> response = ApiResponse.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(CommunicationLogException.class)
+    public ResponseEntity<ApiResponse<String>> handleCommunicationLogException(CommunicationLogException ex) {
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<String>> handleIllegalArgumentException(IllegalArgumentException ex) {

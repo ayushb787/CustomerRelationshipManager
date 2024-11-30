@@ -1,5 +1,6 @@
 package org.demo.crm.customer.service;
 
+import org.demo.crm.communication.service.EmailService;
 import org.demo.crm.customer.dto.CustomerRequest;
 import org.demo.crm.customer.dto.CustomerResponse;
 import org.demo.crm.customer.exception.CustomerNotFoundException;

@@ -5,7 +5,7 @@ import org.demo.crm.sales.dto.SalesPipelineRequest;
 import org.demo.crm.sales.dto.SalesPipelineResponse;
 import org.demo.crm.sales.model.SalesPipeline;
 import org.demo.crm.sales.repository.SalesPipelineRepository;
-import org.demo.crm.lead.repository.LeadRepository;  // Assuming there's a LeadRepository
+import org.demo.crm.lead.repository.LeadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class SalesPipelineService {
     private SalesPipelineRepository salesPipelineRepository;
 
     @Autowired
-    private LeadRepository leadRepository;  // Repository to fetch Lead entity by ID
+    private LeadRepository leadRepository;
 
     public List<SalesPipelineResponse> getAllPipelineStages(Long leadId) {
         List<SalesPipeline> pipelineStages = salesPipelineRepository.findByLeadLeadId(leadId);
@@ -31,13 +31,13 @@ public class SalesPipelineService {
         SalesPipeline salesPipeline = salesPipelineRepository.findById(pipelineId)
                 .orElseThrow(() -> new RuntimeException("Sales Pipeline not found"));
 
-        // Fetch the Lead entity by ID
+
         Optional<Lead> leadOptional = leadRepository.findById(request.getLeadId());
         if (!leadOptional.isPresent()) {
             throw new RuntimeException("Lead not found with id " + request.getLeadId());
         }
 
-        // Set the Lead entity
+
         salesPipeline.setLead(leadOptional.get());
         salesPipeline.setStage(request.getStage());
         salesPipeline.setProbability(request.getProbability());
@@ -50,13 +50,11 @@ public class SalesPipelineService {
     public SalesPipelineResponse createSalesPipeline(SalesPipelineRequest request) {
         SalesPipeline salesPipeline = new SalesPipeline();
 
-        // Fetch the Lead entity by ID
         Optional<Lead> leadOptional = leadRepository.findById(request.getLeadId());
         if (!leadOptional.isPresent()) {
             throw new RuntimeException("Lead not found with id " + request.getLeadId());
         }
 
-        // Set the Lead entity
         salesPipeline.setLead(leadOptional.get());
         salesPipeline.setStage(request.getStage());
         salesPipeline.setProbability(request.getProbability());
@@ -69,7 +67,7 @@ public class SalesPipelineService {
     private SalesPipelineResponse mapToResponse(SalesPipeline salesPipeline) {
         SalesPipelineResponse response = new SalesPipelineResponse();
         response.setPipelineId(salesPipeline.getPipelineId());
-        response.setLeadId(salesPipeline.getLead().getLeadId());  // Assuming Lead entity has getLeadId()
+        response.setLeadId(salesPipeline.getLead().getLeadId());
         response.setStage(salesPipeline.getStage());
         response.setProbability(salesPipeline.getProbability());
         response.setExpectedCloseDate(salesPipeline.getExpectedCloseDate());

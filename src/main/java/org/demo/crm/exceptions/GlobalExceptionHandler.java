@@ -7,6 +7,7 @@ import org.demo.crm.customer.exception.CustomerNotFoundException;
 import org.demo.crm.customer.exception.DuplicateEmailException;
 import org.demo.crm.customer.exception.DuplicatePhoneException;
 import org.demo.crm.lead.exception.LeadNotFoundException;
+import org.demo.crm.notification.exception.NotificationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -67,12 +68,26 @@ public class GlobalExceptionHandler {
         ApiResponse<String> response = new ApiResponse<>(false, "An unexpected error occurred: " + ex.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(NotificationNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleNotificationNotFoundException(NotificationNotFoundException ex) {
+        ApiResponse<String> response = ApiResponse.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new ResponseEntity<>(
+                ApiResponse.error(ex.getMessage(), 400),
+                HttpStatus.BAD_REQUEST
+        );
+    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<String>> handleRuntimeException(RuntimeException ex) {
         ApiResponse<String> response = ApiResponse.error(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<ApiResponse<String>> handleSecurityException(SecurityException ex) {

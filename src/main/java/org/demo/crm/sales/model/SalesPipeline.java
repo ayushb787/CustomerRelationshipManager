@@ -16,9 +16,9 @@ public class SalesPipeline {
 
     @ManyToOne
     @JoinColumn(name = "lead_id", referencedColumnName = "leadId", nullable = false)
-    private Lead lead;  // This is a reference to the Lead entity
+    private Lead lead;
 
-    private String stage;  // Stage in the pipeline (e.g., "Lead", "Negotiation", "Closed")
+    private String stage;  // "Lead", "Negotiation", "Closed"
     private double probability;  // Probability of closing the deal
     private LocalDate expectedCloseDate;
 }

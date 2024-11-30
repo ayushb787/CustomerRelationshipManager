@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class SalesPipelineRequest {
 
-    private Long leadId;  // Lead ID that will be used to fetch the Lead entity
+    private Long leadId;
     private String stage;
     private double probability;
     private LocalDate expectedCloseDate;

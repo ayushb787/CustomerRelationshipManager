@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/customers/**").authenticated() // Protect customer endpoints
                         .requestMatchers("/api/leads/**").authenticated()
                         .requestMatchers("/api/interactions/**").authenticated()
+                        .requestMatchers("/api/notifications/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(customizer -> customizer.realmName("CRM Auth"))

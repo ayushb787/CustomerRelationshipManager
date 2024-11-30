@@ -68,6 +68,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponse<String>> handleRuntimeException(RuntimeException ex) {
+        ApiResponse<String> response = ApiResponse.error(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<ApiResponse<String>> handleSecurityException(SecurityException ex) {
         ApiResponse<String> response = ApiResponse.error(ex.getMessage(), HttpStatus.FORBIDDEN.value());

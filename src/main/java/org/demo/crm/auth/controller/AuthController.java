@@ -1,5 +1,6 @@
 package org.demo.crm.auth.controller;
 
+import jakarta.validation.Valid;
 import org.demo.crm.auth.dto.JwtResponse;
 import org.demo.crm.auth.dto.LoginRequest;
 import org.demo.crm.auth.dto.SignupRequest;
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<String>> registerUser(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<ApiResponse<String>> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         try {
             authService.signup(signupRequest);
             return ResponseEntity.ok(ApiResponse.success("User registered successfully", "User created"));

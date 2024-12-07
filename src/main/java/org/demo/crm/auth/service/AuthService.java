@@ -59,7 +59,7 @@ public class AuthService {
         user.setLastLogin(java.time.LocalDateTime.now());
         userRepository.save(user);
 
-        return jwtUtils.generateToken(user.getUsername(), user.getRole());
+        return jwtUtils.generateToken( user.getUsername(), user.getRole());
     }
 
     public String getUserRole(String username) {
@@ -67,6 +67,13 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return user.getRole();
+    }
+
+    public Long getUserId(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return user.getUserId();
     }
 
 }

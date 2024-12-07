@@ -17,7 +17,7 @@ public class JwtUtils {
     private final int jwtExpirationMs = 86400000; // Token validity (24 hours)
 
     // Generate JWT token
-    public String generateToken(String username, String role) {
+    public String generateToken( String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)

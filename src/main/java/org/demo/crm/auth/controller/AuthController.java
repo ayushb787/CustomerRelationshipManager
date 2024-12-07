@@ -43,8 +43,10 @@ public class AuthController {
             // Retrieve the user's role from your user service or repository
             String role = authService.getUserRole(loginRequest.getUsername());
 
+            Long userId = authService.getUserId(loginRequest.getUsername());
+
             // Include the correct role in the JWT response
-            JwtResponse jwtResponse = new JwtResponse(token, loginRequest.getUsername(), role);
+            JwtResponse jwtResponse = new JwtResponse(token, userId, loginRequest.getUsername(), role);
             return ResponseEntity.ok(ApiResponse.success(jwtResponse, "Login successful"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

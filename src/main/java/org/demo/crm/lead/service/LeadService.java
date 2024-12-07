@@ -1,5 +1,6 @@
 package org.demo.crm.lead.service;
 
+import org.demo.crm.auth.model.User;
 import org.demo.crm.auth.repository.UserRepository;
 import org.demo.crm.customer.repository.CustomerRepository;
 import org.demo.crm.lead.dto.LeadRequest;
@@ -101,5 +102,9 @@ public class LeadService {
         lead.setStatus(leadRequest.getStatus());
         lead.setPipelineStage(leadRequest.getPipelineStage());
         return lead;
+    }
+
+    public List<User> getUsersByRole(String role) {
+        return userRepository.findByRole(role);
     }
 }

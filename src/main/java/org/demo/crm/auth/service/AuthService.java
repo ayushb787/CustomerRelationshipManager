@@ -63,12 +63,10 @@ public class AuthService {
     }
 
     public String getUserRole(String username) {
-        // Fetch the user from the database or any repository
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Return the role of the user
-        return user.getRole(); // Assuming the `User` entity has a `getRole()` method
+        return user.getRole();
     }
 
 }

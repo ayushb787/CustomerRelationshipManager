@@ -3,11 +3,14 @@ package org.demo.crm.lead.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.demo.crm.auth.model.ApiResponse;
+import org.demo.crm.auth.model.User;
 import org.demo.crm.lead.dto.LeadRequest;
 import org.demo.crm.lead.dto.LeadResponse;
 import org.demo.crm.lead.service.LeadService;
 import org.demo.crm.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,6 +78,20 @@ public class LeadController {
         String role = jwtUtil.extractClaims(token).get("role", String.class);
         if (!"Admin".equals(role)) {
             throw new SecurityException("Access denied: Admin role required");
+        }
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<ApiResponse<List<User>>> getUsersByRole(@RequestParam String role, HttpServletRequest request) {
+        try {
+            validateRequestForAdmin(request);
+            List<User> users = leadService.getUsersByRole(role);
+            if (users.isEmpty()) {
+                return ResponseEntity.ok(ApiResponse.success(users, "No users found with the role " + role));
+            }
+            return ResponseEntity.ok(ApiResponse.success(users, "Users fetched successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(ApiResponse.error("An error occurred: " + e.getMessage(), 500));
         }
     }
 }

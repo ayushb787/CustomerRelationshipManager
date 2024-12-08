@@ -15,8 +15,8 @@ public class CommunicationLog {
     private Long logId;
 
     private Long customerId;
-    private String channel; // e.g., "Email", "SMS"
+    private String channel;
     private String message;
     private Date date;
-    private String status; // e.g., "Sent", "Failed"
+    private String status;
 }

@@ -51,7 +51,7 @@ public class LeadController {
             @PathVariable Long leadId,
             @Valid @RequestBody LeadRequest leadRequest,
             HttpServletRequest request) {
-        validateRequestForAdmin(request); // Ensure only admins can update
+        validateRequestForAdmin(request);
         LeadResponse updatedLead = leadService.updateLead(leadId, leadRequest);
         return ApiResponse.success(updatedLead, "Lead updated successfully");
     }

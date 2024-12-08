@@ -21,7 +21,7 @@ public class Interaction {
     private Long salespersonId;
 
     @Column(nullable = false)
-    private String interactionType; // e.g., "Email", "Call", "Meeting"
+    private String interactionType;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -30,5 +30,5 @@ public class Interaction {
     @Column(columnDefinition = "TEXT")
     private String details;
 
-    private String attachments; // Store attachment URLs or paths
+    private String attachments;
 }

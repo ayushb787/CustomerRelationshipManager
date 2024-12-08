@@ -21,7 +21,7 @@ public class Feedback {
     private Long salespersonId;
 
     @Column(nullable = false)
-    private Integer rating; // 1 to 5
+    private Integer rating;
 
     @Column(length = 1000)
     private String comments;

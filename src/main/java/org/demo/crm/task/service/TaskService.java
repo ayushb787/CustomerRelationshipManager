@@ -18,10 +18,9 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     @Autowired
-    private UserRepository userRepository; // To validate the assignedTo field
+    private UserRepository userRepository;
 
     public TaskResponseDTO createTask(TaskRequestDTO taskRequestDTO) {
-        // Validate if the assignedTo user exists and has the role "Salesperson"
         if (!userRepository.existsByUserIdAndRole(taskRequestDTO.getAssignedTo(), "Salesperson")) {
             throw new IllegalArgumentException(
                     "User with ID " + taskRequestDTO.getAssignedTo() + " does not exist or is not a salesperson."
@@ -40,7 +39,6 @@ public class TaskService {
     }
 
     public List<TaskResponseDTO> getTasksBySalesperson(Long salespersonId) {
-        // Ensure that the salesperson exists and has the role "Salesperson"
         if (!userRepository.existsByUserIdAndRole(salespersonId, "Salesperson")) {
             throw new IllegalArgumentException(
                     "User with ID " + salespersonId + " does not exist or is not a salesperson."
@@ -52,32 +50,26 @@ public class TaskService {
     }
 
     public TaskResponseDTO updateTask(Long taskId, TaskRequestDTO taskRequestDTO) {
-        // Find the task by its ID or throw an exception if not found
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new IllegalArgumentException("Task ID " + taskId + " not found."));
 
-        // Validate if the assigned user exists and has the correct role (Salesperson, if applicable)
         if (!userRepository.existsByUserIdAndRole(taskRequestDTO.getAssignedTo(), "Salesperson")) {
             throw new IllegalArgumentException(
                     "User with ID " + taskRequestDTO.getAssignedTo() + " does not exist or is not a salesperson.");
         }
 
-        // Validate status value (if you want to ensure only valid statuses are used)
         if (!taskRequestDTO.getStatus().matches("Pending|In Progress|Completed")) {
             throw new IllegalArgumentException("Status must be one of: Pending, In Progress, Completed.");
         }
 
-        // Update the task properties based on the input DTO
         task.setAssignedTo(taskRequestDTO.getAssignedTo());
         task.setDescription(taskRequestDTO.getDescription());
         task.setDueDate(taskRequestDTO.getDueDate());
         task.setStatus(taskRequestDTO.getStatus());
         task.setPriority(taskRequestDTO.getPriority());
 
-        // Save the updated task back to the database
         Task updatedTask = taskRepository.save(task);
 
-        // Return the updated task as a response DTO
         return toResponseDTO(updatedTask);
     }
 

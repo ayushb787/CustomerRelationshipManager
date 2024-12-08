@@ -8,12 +8,11 @@ public class PerformanceMetricsResponse {
 
     private Long metricId;
     private Long userId;
-    private PerformanceMetrics.MetricType metricType;  // Use Enum directly
+    private PerformanceMetrics.MetricType metricType;
     private Double value;
-    private LocalDateTime date;  // Use LocalDateTime instead of Date
+    private LocalDateTime date;
     private String remarks;
 
-    // Getters and Setters
     public Long getMetricId() {
         return metricId;
     }

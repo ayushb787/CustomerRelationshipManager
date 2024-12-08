@@ -25,11 +25,7 @@ public class AuthService {
     private JwtUtils jwtUtils;
 
 
-    //Why use SignupRequest DTO instead of User directly?
-    //Separation of Concerns: Using a SignupRequest DTO separates the user input validation and business logic from the persistence layer (User entity). This ensures that your database schema is not exposed unnecessarily.
-    //Validation: It gives you better control over what the client can send (for example, you can easily add validation annotations such as @NotNull, @Email, etc., on the DTO fields).
-    //Security: By accepting a DTO, you can control which fields the client is allowed to send. For example, the User entity might have sensitive fields like passwordHash or internal identifiers that should not be exposed via the API.
-    public String signup(SignupRequest signupRequest) {
+       public String signup(SignupRequest signupRequest) {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             throw new UserAlreadyExistsException("Username is already taken");
         }

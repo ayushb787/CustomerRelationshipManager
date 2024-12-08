@@ -24,21 +24,18 @@ public class TaskController {
 
     @Autowired
     private JwtUtils jwtUtil;
-    // Create a new task
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<TaskResponseDTO>> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDTO) {
         TaskResponseDTO createdTask = taskService.createTask(taskRequestDTO);
         return ResponseEntity.ok(ApiResponse.success(createdTask, "Task created successfully"));
     }
 
-    // Get tasks for a salesperson
     @GetMapping("/salesperson/{id}")
     public ResponseEntity<ApiResponse<List<TaskResponseDTO>>> getTasksBySalesperson(@PathVariable Long id) {
         List<TaskResponseDTO> tasks = taskService.getTasksBySalesperson(id);
         return ResponseEntity.ok(ApiResponse.success(tasks, "Tasks retrieved successfully"));
     }
 
-    // Update task status
     @PutMapping("/{taskId}/update")
     public ResponseEntity<ApiResponse<TaskResponseDTO>> updateTaskStatus(
             @PathVariable Long taskId,
@@ -58,24 +55,21 @@ public class TaskController {
         }
     }
 
-    // Get all tasks (Admin only)
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<TaskResponseDTO>>> getAllTasks(HttpServletRequest request) {
-        // Check if the current user is an Admin
         validateRequestForAdmin(request);
 
         List<TaskResponseDTO> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(ApiResponse.success(tasks, "All tasks retrieved successfully"));
     }
 
-    // Get task by ID
     @GetMapping("/{taskId}")
     public ResponseEntity<ApiResponse<TaskResponseDTO>> getTaskById(@PathVariable Long taskId) {
         TaskResponseDTO task = taskService.getTaskById(taskId);
         return ResponseEntity.ok(ApiResponse.success(task, "Task retrieved successfully"));
     }
 
-    /* Delete a task by ID */@DeleteMapping("/{taskId}/delete")
+    @DeleteMapping("/{taskId}/delete")
     public ResponseEntity<ApiResponse<String>> deleteTask(@PathVariable Long taskId) {
         taskService.deleteTask(taskId);
         return ResponseEntity.ok(ApiResponse.success(null, "Task deleted successfully"));

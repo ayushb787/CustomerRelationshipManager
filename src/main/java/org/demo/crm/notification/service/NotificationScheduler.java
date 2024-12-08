@@ -10,10 +10,8 @@ public class NotificationScheduler {
     @Autowired
     private NotificationService notificationService;
 
-    // Schedule reminders for follow-ups every day at 8 AM
     @Scheduled(cron = "0 0 8 * * ?")
     public void sendDailyReminders() {
-        // Yet to be done - Logic to fetch leads/customers requiring reminders and send notifications
 //         notificationService.createNotification(userId, "Reminder message", "REMINDER");
     }
 }

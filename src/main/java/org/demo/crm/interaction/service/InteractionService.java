@@ -38,12 +38,10 @@ public class InteractionService {
 
     public InteractionResponse createInteraction(InteractionRequest request) {
 
-        // Validate customerId
         if (!customerRepository.existsById(request.getCustomerId())) {
             throw new IllegalArgumentException("Customer ID " + request.getCustomerId() + " does not exist");
         }
 
-        // Validate salespersonId with role "Salesperson"
         if (!userRepository.existsByUserIdAndRole(request.getSalespersonId(), "Salesperson")) {
             throw new IllegalArgumentException("Salesperson ID " + request.getSalespersonId() + " is invalid or does not have the role 'Salesperson'");
         }

@@ -33,9 +33,9 @@ public class PerformanceMetricsService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         metrics.setUser(user);
-        metrics.setMetricType(request.getMetricType());  // MetricType is directly used as Enum
+        metrics.setMetricType(request.getMetricType());
         metrics.setValue(request.getValue());
-        metrics.setDate(request.getDate());  // LocalDateTime used directly
+        metrics.setDate(request.getDate());
         metrics.setRemarks(request.getRemarks());
 
         performanceMetricsRepository.save(metrics);
@@ -67,7 +67,7 @@ public class PerformanceMetricsService {
         response.setUserId(metrics.getUser().getUserId());
         response.setMetricType(metrics.getMetricType());
         response.setValue(metrics.getValue());
-        response.setDate(metrics.getDate());  // LocalDateTime is used directly
+        response.setDate(metrics.getDate());
         response.setRemarks(metrics.getRemarks());
         return response;
     }

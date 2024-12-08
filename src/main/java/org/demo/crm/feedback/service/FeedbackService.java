@@ -25,21 +25,18 @@ public class FeedbackService {
     private UserRepository userRepository;
 
     public FeedbackResponseDTO addFeedback(FeedbackRequestDTO feedbackRequestDTO) {
-        // Validate if customer exists
         if (!customerRepository.existsById(feedbackRequestDTO.getCustomerId())) {
             throw new IllegalArgumentException(
                     "Customer with ID " + feedbackRequestDTO.getCustomerId() + " does not exist."
             );
         }
 
-        // Validate if salesperson exists and has the role "Salesperson"
         if (!userRepository.existsByUserIdAndRole(feedbackRequestDTO.getSalespersonId(), "Salesperson")) {
             throw new IllegalArgumentException(
                     "Salesperson with ID " + feedbackRequestDTO.getSalespersonId() + " does not exist or is not a salesperson."
             );
         }
 
-        // Validate rating range
         if (feedbackRequestDTO.getRating() < 1 || feedbackRequestDTO.getRating() > 5) {
             throw new IllegalArgumentException("Rating must be between 1 and 5.");
         }
@@ -57,7 +54,6 @@ public class FeedbackService {
     }
 
     public List<FeedbackResponseDTO> getFeedbackByCustomer(Long customerId) {
-        // Validate if customer exists
         if (!customerRepository.existsById(customerId)) {
             throw new IllegalArgumentException(
                     "Customer with ID " + customerId + " does not exist."
@@ -69,7 +65,6 @@ public class FeedbackService {
     }
 
     public List<FeedbackResponseDTO> getFeedbackBySalesperson(Long salespersonId) {
-        // Validate if salesperson exists and has the role "Salesperson"
         if (!userRepository.existsByUserIdAndRole(salespersonId, "Salesperson")) {
             throw new IllegalArgumentException(
                     "Salesperson with ID " + salespersonId + " does not exist or is not a salesperson."

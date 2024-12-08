@@ -19,7 +19,6 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    // Add Feedback
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<FeedbackResponseDTO>> addFeedback(
             @Valid @RequestBody FeedbackRequestDTO feedbackRequestDTO) {
@@ -27,7 +26,6 @@ public class FeedbackController {
         return ResponseEntity.ok(ApiResponse.success(savedFeedback, "Feedback added successfully"));
     }
 
-    // Get Feedback by Customer
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<ApiResponse<List<FeedbackResponseDTO>>> getFeedbackByCustomer(
             @PathVariable Long customerId) {
@@ -35,7 +33,6 @@ public class FeedbackController {
         return ResponseEntity.ok(ApiResponse.success(feedbackList, "Feedback retrieved successfully for customer"));
     }
 
-    // Get Feedback by Salesperson
     @GetMapping("/salesperson/{salespersonId}")
     public ResponseEntity<ApiResponse<List<FeedbackResponseDTO>>> getFeedbackBySalesperson(
             @PathVariable Long salespersonId) {

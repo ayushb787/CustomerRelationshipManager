@@ -18,7 +18,7 @@ public class Customer {
     private String email;
     private String phone;
     private String address;
-    private String category;  // Potential, Active, Inactive
+    private String category;
     private String preferences;
     private LocalDateTime dateAdded;
 }

@@ -24,7 +24,7 @@ public class Notification {
     private LocalDateTime dateSent;
 
     @Column(nullable = false)
-    private String type; // e.g., "REMINDER", "NEW_LEAD"
+    private String type;
 
     @Column(nullable = false)
     private Boolean readStatus = false;

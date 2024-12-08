@@ -33,11 +33,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(customizer -> customizer.configurationSource(corsConfigurationSource())) // Enable CORS
-                .csrf(csrf -> csrf.disable()) // Disable CSRF (adjust based on requirements)
+                .cors(customizer -> customizer.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll() // Public endpoints
-                        .requestMatchers("/api/customers/**").authenticated() // Protect customer endpoints
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/customers/**").authenticated()
                         .requestMatchers("/api/leads/**").authenticated()
                         .requestMatchers("/api/interactions/**").authenticated()
                         .requestMatchers("/api/notifications/**").authenticated()

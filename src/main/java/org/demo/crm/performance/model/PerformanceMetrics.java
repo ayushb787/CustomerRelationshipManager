@@ -39,7 +39,6 @@ public class PerformanceMetrics {
         SALES_TARGET
     }
 
-    // Getters and setters
     public Long getMetricId() {
         return metricId;
     }

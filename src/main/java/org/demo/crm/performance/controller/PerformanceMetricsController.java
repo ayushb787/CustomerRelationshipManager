@@ -32,7 +32,7 @@ public class PerformanceMetricsController {
     public ApiResponse<PerformanceMetricsResponse> createPerformanceMetrics(
             @RequestBody PerformanceMetricsRequest request,
             HttpServletRequest httpRequest) {
-        validateRequestForAdmin(httpRequest);  // Admin validation
+        validateRequestForAdmin(httpRequest);
         PerformanceMetricsResponse createdMetrics = performanceMetricsService.createPerformanceMetrics(request);
         return ApiResponse.success(createdMetrics, "Performance metric created successfully");
     }
@@ -42,12 +42,11 @@ public class PerformanceMetricsController {
             @PathVariable Long id,
             @RequestBody PerformanceMetricsRequest request,
             HttpServletRequest httpRequest) {
-        validateRequestForAdmin(httpRequest);  // Admin validation
+        validateRequestForAdmin(httpRequest);
         PerformanceMetricsResponse updatedMetrics = performanceMetricsService.updatePerformanceMetrics(id, request);
         return ApiResponse.success(updatedMetrics, "Performance metric updated successfully");
     }
 
-    // Validate JWT token
     private void validateRequest(HttpServletRequest httpRequest) {
         String token = jwtUtils.extractToken(httpRequest);
         if (token == null || !jwtUtils.validateToken(token)) {

@@ -18,7 +18,7 @@ public class SalesPipeline {
     @JoinColumn(name = "lead_id", referencedColumnName = "leadId", nullable = false)
     private Lead lead;
 
-    private String stage;  // "Lead", "Negotiation", "Closed"
-    private double probability;  // Probability of closing the deal
+    private String stage;
+    private double probability;
     private LocalDate expectedCloseDate;
 }

@@ -22,35 +22,30 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle UserNotFoundException
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleUserNotFoundException(UserNotFoundException ex) {
         ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null, HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // Handle UserAlreadyExistsException
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<String>> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null, HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // Handle CustomerNotFoundException
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleCustomerNotFoundException(CustomerNotFoundException ex) {
         ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // Handle DuplicateEmailException
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<ApiResponse<String>> handleDuplicateEmailException(DuplicateEmailException ex) {
         ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null, HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // Handle DuplicatePhoneException
     @ExceptionHandler(DuplicatePhoneException.class)
     public ResponseEntity<ApiResponse<String>> handleDuplicatePhoneException(DuplicatePhoneException ex) {
         ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null, HttpStatus.BAD_REQUEST.value());
@@ -63,7 +58,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // Handle other exceptions (e.g., generic errors)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleGenericException(Exception ex) {
         ApiResponse<String> response = new ApiResponse<>(false, "An unexpected error occurred: " + ex.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -103,7 +97,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-    // Handle validation exceptions (e.g., invalid fields in request body)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();

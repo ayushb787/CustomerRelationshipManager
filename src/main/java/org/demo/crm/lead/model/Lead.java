@@ -17,13 +17,13 @@ public class Lead {
     private Long customerId;
 
     @Column(nullable = false)
-    private Long assignedTo; // User ID of salesperson
+    private Long assignedTo;
 
     @Column(nullable = false)
-    private String status; // Example: Active, Inactive
+    private String status;
 
     @Column(nullable = false)
-    private String pipelineStage; // Example: Contacted, Negotiation, Closed
+    private String pipelineStage;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime dateCreated;

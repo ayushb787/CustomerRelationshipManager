@@ -13,7 +13,7 @@ public class Task {
     private Long taskId;
 
     @Column(nullable = false)
-    private Long assignedTo; // Salesperson ID
+    private Long assignedTo;
 
     @Column(nullable = false)
     private String description;
@@ -22,8 +22,8 @@ public class Task {
     private LocalDate dueDate;
 
     @Column(nullable = false)
-    private String status; // Pending, In Progress, Completed
+    private String status;
 
     @Column(nullable = false)
-    private String priority; // Low, Medium, High
+    private String priority;
 }

@@ -1,11 +1,14 @@
 package org.demo.crm.task.service;
 
 import org.demo.crm.auth.repository.UserRepository;
+import org.demo.crm.notification.service.NotificationService;
 import org.demo.crm.task.dto.TaskRequestDTO;
 import org.demo.crm.task.dto.TaskResponseDTO;
 import org.demo.crm.task.entity.Task;
 import org.demo.crm.task.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +22,9 @@ public class TaskService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public TaskResponseDTO createTask(TaskRequestDTO taskRequestDTO) {
         if (!userRepository.existsByUserIdAndRole(taskRequestDTO.getAssignedTo(), "Salesperson")) {
@@ -35,18 +41,20 @@ public class TaskService {
         task.setPriority(taskRequestDTO.getPriority());
 
         Task savedTask = taskRepository.save(task);
+        String message = "A new task has been assigned to you: " + task.getTaskId();
+        notificationService.createNotification(task.getAssignedTo(), message, "NEW_TASK");
         return toResponseDTO(savedTask);
     }
 
-    public List<TaskResponseDTO> getTasksBySalesperson(Long salespersonId) {
+    public Page<TaskResponseDTO> getTasksBySalesperson(Long salespersonId, Pageable pageable) {
         if (!userRepository.existsByUserIdAndRole(salespersonId, "Salesperson")) {
             throw new IllegalArgumentException(
                     "User with ID " + salespersonId + " does not exist or is not a salesperson."
             );
         }
 
-        List<Task> tasks = taskRepository.findByAssignedTo(salespersonId);
-        return tasks.stream().map(this::toResponseDTO).collect(Collectors.toList());
+        Page<Task> tasks = taskRepository.findByAssignedTo(salespersonId, pageable);
+        return tasks.map(this::toResponseDTO);
     }
 
     public TaskResponseDTO updateTask(Long taskId, TaskRequestDTO taskRequestDTO) {
@@ -69,14 +77,15 @@ public class TaskService {
         task.setPriority(taskRequestDTO.getPriority());
 
         Task updatedTask = taskRepository.save(task);
-
+        String message = "A task has been updated. Please check: " + task.getTaskId();
+        notificationService.createNotification(task.getAssignedTo(), message, "UPDATE_TASK");
         return toResponseDTO(updatedTask);
     }
 
 
-    public List<TaskResponseDTO> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
-        return tasks.stream().map(this::toResponseDTO).collect(Collectors.toList());
+    public Page<TaskResponseDTO> getAllTasks(Pageable pageable) {
+        Page<Task> tasks = taskRepository.findAll(pageable);
+        return tasks.map(this::toResponseDTO);
     }
 
     public TaskResponseDTO getTaskById(Long taskId) {
@@ -90,7 +99,6 @@ public class TaskService {
                 () -> new IllegalArgumentException("Task ID " + taskId + " not found.")
         );
 
-        // Delete the task
         taskRepository.delete(task);
     }
 

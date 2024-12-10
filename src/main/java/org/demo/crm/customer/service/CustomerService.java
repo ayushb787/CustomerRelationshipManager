@@ -9,6 +9,8 @@ import org.demo.crm.customer.exception.DuplicatePhoneException;
 import org.demo.crm.customer.model.Customer;
 import org.demo.crm.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,11 +24,9 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<CustomerResponse> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
-        return customers.stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+    public Page<CustomerResponse> getAllCustomers(Pageable pageable) {
+        Page<Customer> customers = customerRepository.findAll(pageable);
+        return customers.map(this::convertToResponseDTO);
     }
 
     public CustomerResponse getCustomerById(Long id) {

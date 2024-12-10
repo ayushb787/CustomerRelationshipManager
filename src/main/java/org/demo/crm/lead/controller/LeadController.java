@@ -9,6 +9,9 @@ import org.demo.crm.lead.dto.LeadResponse;
 import org.demo.crm.lead.service.LeadService;
 import org.demo.crm.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +29,11 @@ public class LeadController {
     private JwtUtils jwtUtil;
 
     @GetMapping
-    public ApiResponse<List<LeadResponse>> getAllLeads(HttpServletRequest request) {
+    public ApiResponse<Page<LeadResponse>> getAllLeads(HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size ){
         validateRequest(request);
-        List<LeadResponse> leads = leadService.getAllLeads();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<LeadResponse> leads = leadService.getAllLeads(pageable);
         return ApiResponse.success(leads, "Leads retrieved successfully");
     }
 
@@ -58,7 +63,7 @@ public class LeadController {
 
     @DeleteMapping("/{leadId}")
     public ApiResponse<String> deleteLead(@PathVariable Long leadId, HttpServletRequest request) {
-        validateRequest(request);
+        validateRequestForAdmin(request);
         leadService.deleteLead(leadId);
         return ApiResponse.success("Lead deleted successfully", "Lead deleted successfully");
     }
@@ -84,7 +89,7 @@ public class LeadController {
     @GetMapping("/users")
     public ResponseEntity<ApiResponse<List<User>>> getUsersByRole(@RequestParam String role, HttpServletRequest request) {
         try {
-            validateRequestForAdmin(request);
+            validateRequest(request);
             List<User> users = leadService.getUsersByRole(role);
             if (users.isEmpty()) {
                 return ResponseEntity.ok(ApiResponse.success(users, "No users found with the role " + role));

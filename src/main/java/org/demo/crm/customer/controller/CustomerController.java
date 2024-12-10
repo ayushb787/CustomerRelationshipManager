@@ -7,7 +7,9 @@ import org.demo.crm.customer.dto.CustomerResponse;
 import org.demo.crm.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -18,8 +20,10 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping
-    public ApiResponse<List<CustomerResponse>> getAllCustomers() {
-        List<CustomerResponse> customers = customerService.getAllCustomers();
+    public ApiResponse<Page<CustomerResponse>> getAllCustomers( @RequestParam(defaultValue = "0") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerResponse> customers = customerService.getAllCustomers(pageable);
         return ApiResponse.success(customers, "Customers retrieved successfully");
     }
 

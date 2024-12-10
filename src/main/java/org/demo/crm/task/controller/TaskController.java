@@ -7,6 +7,9 @@ import org.demo.crm.task.dto.TaskResponseDTO;
 import org.demo.crm.task.service.TaskService;
 import org.demo.crm.auth.model.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +34,10 @@ public class TaskController {
     }
 
     @GetMapping("/salesperson/{id}")
-    public ResponseEntity<ApiResponse<List<TaskResponseDTO>>> getTasksBySalesperson(@PathVariable Long id) {
-        List<TaskResponseDTO> tasks = taskService.getTasksBySalesperson(id);
+    public ResponseEntity<ApiResponse<Page<TaskResponseDTO>>> getTasksBySalesperson(@PathVariable Long id,  @RequestParam(defaultValue = "0") int page,
+                                                                                    @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TaskResponseDTO> tasks = taskService.getTasksBySalesperson(id, pageable);
         return ResponseEntity.ok(ApiResponse.success(tasks, "Tasks retrieved successfully"));
     }
 
@@ -56,10 +61,12 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<TaskResponseDTO>>> getAllTasks(HttpServletRequest request) {
-        validateRequestForAdmin(request);
+    public ResponseEntity<ApiResponse<Page<TaskResponseDTO>>> getAllTasks(HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
+                                                                          @RequestParam(defaultValue = "10") int size) {
 
-        List<TaskResponseDTO> tasks = taskService.getAllTasks();
+        validateRequestForAdmin(request);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TaskResponseDTO> tasks = taskService.getAllTasks(pageable);
         return ResponseEntity.ok(ApiResponse.success(tasks, "All tasks retrieved successfully"));
     }
 

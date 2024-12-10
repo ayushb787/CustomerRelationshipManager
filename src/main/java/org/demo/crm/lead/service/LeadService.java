@@ -8,7 +8,10 @@ import org.demo.crm.lead.dto.LeadResponse;
 import org.demo.crm.lead.model.Lead;
 import org.demo.crm.lead.repository.LeadRepository;
 import org.demo.crm.notification.service.NotificationService;
+import org.demo.crm.task.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,10 +33,10 @@ public class LeadService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<LeadResponse> getAllLeads() {
-        return leadRepository.findAll().stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+    public Page<LeadResponse> getAllLeads(Pageable pageable) {
+        Page<Lead> leads = leadRepository.findAll(pageable);
+
+        return leads.map(this::convertToResponseDTO);
     }
 
     public LeadResponse getLeadById(Long leadId) {
@@ -57,7 +60,7 @@ public class LeadService {
         lead.setLastUpdated(LocalDateTime.now());
         Lead savedLead = leadRepository.save(lead);
 
-        String message = "A new lead has been assigned to you: " + lead.getCustomerId();
+        String message = "A new lead has been assigned to you: " + lead.getLeadId();
         notificationService.createNotification(lead.getAssignedTo(), message, "NEW_LEAD");
 
         return convertToResponseDTO(savedLead);
@@ -74,6 +77,8 @@ public class LeadService {
         lead.setLastUpdated(LocalDateTime.now());
 
         Lead updatedLead = leadRepository.save(lead);
+        String message = "A lead has been updated. Please check: " + lead.getLeadId();
+        notificationService.createNotification(lead.getAssignedTo(), message, "UPDATE_LEAD");
         return convertToResponseDTO(updatedLead);
     }
 

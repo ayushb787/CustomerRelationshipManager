@@ -20,6 +20,7 @@ public class NotificationService {
     public List<NotificationDto> getUserNotifications(Long userId) {
         return notificationRepository.findByUserId(userId)
                 .stream()
+                .filter(notification -> !notification.getReadStatus())
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }

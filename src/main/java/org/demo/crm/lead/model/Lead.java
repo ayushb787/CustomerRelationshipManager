@@ -19,9 +19,11 @@ public class Lead {
     @Column(nullable = false)
     private Long assignedTo;
 
+//    In Progress, Qualified, or Lost
     @Column(nullable = false)
     private String status;
 
+//    Prospect, Negotiation, or Closing
     @Column(nullable = false)
     private String pipelineStage;
 

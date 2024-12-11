@@ -18,7 +18,9 @@ public class Customer {
     private String email;
     private String phone;
     private String address;
+//    Potential, Active, or Inactive
     private String category;
+//    Email, Phone, Whatsapp, or Other
     private String preferences;
     private LocalDateTime dateAdded;
 }

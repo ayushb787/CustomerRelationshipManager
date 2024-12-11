@@ -20,10 +20,10 @@ public class Task {
 
     @Column(nullable = false)
     private LocalDate dueDate;
-
+//    Pending, In Progress, or Completed
     @Column(nullable = false)
     private String status;
-
+//    Low, Medium or High
     @Column(nullable = false)
     private String priority;
 }
